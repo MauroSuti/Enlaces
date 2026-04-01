@@ -9,15 +9,13 @@
     <link rel="icon" type="image/png" href="favicon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary-bg: #09090b;
             --card-bg: rgba(255, 255, 255, 0.05);
-            --accent: #c62828; /* Cambiado al rojo de Auritri */
+            --accent: #c62828; 
             --text-main: #ffffff;
-            --text-dim: #a1a1aa;
             --muted: #9aa3a6;
         }
 
@@ -31,7 +29,7 @@
             min-height: 100vh;
         }
 
-        /* --- ESTILO DEL HEADER COPIADO --- */
+        /* --- HEADER CALCADO DEL ORIGINAL --- */
         header {
             padding: 28px 18px 12px;
             text-align: center;
@@ -39,41 +37,42 @@
             top: 0;
             backdrop-filter: blur(2px);
             z-index: 10;
-            min-height: 240px;
-            transition: all 0.4s ease-in-out;
+            min-height: 240px; /* El tamaño grande inicial */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            transition: padding 0.4s ease-in-out, min-height 0.4s ease-in-out, backdrop-filter 0.4s ease-in-out;
         }
 
         header.shrink {
             padding: 14px 18px 6px;
-            min-height: 120px; /* Ajustado para la versión de links */
+            min-height: 160px; /* Tamaño reducido exacto */
             backdrop-filter: blur(8px);
             background: rgba(0,0,0,0.4);
         }
 
         header .logo {
-            max-width: 250px;
+            max-width: 250px; /* Tamaño original */
             height: auto;
+            display: block;
+            margin: 0 auto;
             transition: max-width 0.4s ease-in-out;
         }
 
         header.shrink .logo {
-            max-width: 120px;
+            max-width: 125px; /* Reducción al 50% exacta */
         }
 
         header .tagline {
-            font-size: 0.95rem;
+            margin: 6px 0 0;
             color: var(--muted);
-            margin: 12px 0 0;
-            transition: all 0.4s ease-in-out;
+            font-size: 0.95rem;
+            transition: font-size 0.4s ease-in-out;
         }
 
         header.shrink .tagline {
             font-size: 0.75rem;
-            margin-top: 5px;
         }
 
         /* --- CONTENEDOR DE LINKS --- */
@@ -81,8 +80,7 @@
             width: 90%;
             max-width: 500px;
             margin: 0 auto;
-            padding: 20px 0 40px;
-            text-align: center;
+            padding: 20px 0 60px;
         }
 
         .links-container {
@@ -92,14 +90,14 @@
         }
 
         .link-card {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial', sans-serif; /* Mantenemos Arial para legibilidad de botones */
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px;
+            padding: 18px;
             border-radius: 12px;
             text-decoration: none;
             color: var(--text-main);
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.2s ease;
             backdrop-filter: blur(10px);
             display: flex;
@@ -108,7 +106,7 @@
         }
 
         .link-card i {
-            font-size: 20px;
+            font-size: 22px;
             position: absolute;
             left: 20px;
         }
@@ -122,18 +120,20 @@
             background: rgba(255, 255, 255, 0.1);
             transform: scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(198, 40, 40, 0.2);
+            box-shadow: 0 0 20px rgba(198, 40, 40, 0.25);
         }
 
         .footer {
+            text-align: center;
             margin-top: 40px;
-            font-size: 12px;
-            color: var(--text-dim);
+            font-size: 13px;
+            color: var(--muted);
         }
 
+        /* Ajuste para móviles */
         @media (max-width: 600px) {
-            header { min-height: 200px; }
-            header.shrink { min-height: 100px; }
+            header { min-height: 280px; }
+            header.shrink { min-height: 200px; }
         }
     </style>
 </head>
@@ -144,7 +144,7 @@
         <p class="tagline">Somos Auritri, somos una banda</p>
     </header>
 
-    <div class="wrapper">
+    <main class="wrapper">
         <div class="links-container">
             <a href="https://auritri.onrender.com" class="link-card" target="_blank">
                 <i class="fas fa-globe"></i>
@@ -158,10 +158,7 @@
                 <i class="fab fa-tiktok"></i>
                 <span>TikTok</span>
             </a>
-            <a href="#" class="link-card" target="_blank">
-                <i class="fab fa-spotify"></i>
-                <span>Spotify</span>
-            <a href="https://www.facebook.com/auritriofficial" class="link-card" target="_blank">
+            <a href="https://www.youtube.com/@auritri" class="link-card" target="_blank">
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
             </a>
@@ -169,7 +166,7 @@
                 <i class="fab fa-soundcloud"></i>
                 <span>SoundCloud</span>
             </a>
-            <a href="#" class="link-card" target="_blank">
+            <a href="https://open.spotify.com" class="link-card" target="_blank">
                 <i class="fab fa-spotify"></i>
                 <span>Spotify</span>
             </a>
@@ -178,15 +175,15 @@
         <div class="footer">
             Creada con ❤ por Auritri
         </div>
-    </div>
+    </main>
 
     <script>
-        // LOGICA DE SCROLL PARA EL HEADER
         const header = document.getElementById('main-header');
         let isShrunk = false;
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
+            // Se achica apenas bajas 1px, igual que en tu otra página
+            if (window.scrollY > 10) {
                 if (!isShrunk) {
                     header.classList.add('shrink');
                     isShrunk = true;
@@ -197,13 +194,6 @@
                     isShrunk = false;
                 }
             }
-        });
-
-        // Log de clicks
-        document.querySelectorAll('.link-card').forEach(item => {
-            item.addEventListener('click', event => {
-                console.log("Visitando: " + event.currentTarget.querySelector('span').innerText);
-            });
         });
     </script>
 </body>
