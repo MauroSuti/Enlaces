@@ -30,58 +30,64 @@
         }
 
         /* --- HEADER CALCADO DEL ORIGINAL --- */
-        header {
-            padding: 28px 18px 12px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            backdrop-filter: blur(2px);
-            z-index: 10;
-            min-height: 240px; /* El tamaño grande inicial */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: padding 0.4s ease-in-out, min-height 0.4s ease-in-out, backdrop-filter 0.4s ease-in-out;
-        }
+        /* --- HEADER RECALIBRADO PARA IDENTIDAD TOTAL --- */
+header {
+    padding: 28px 18px 12px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(2px);
+    z-index: 10;
+    min-height: 240px; 
+    
+    /* Cambiamos el centrado de Flexbox por una posición fija arriba */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinea al inicio, no al centro */
+    padding-top: 40px; /* Ajuste manual para que baje lo justo y necesario */
+    
+    transition: padding 0.4s ease-in-out, min-height 0.4s ease-in-out, backdrop-filter 0.4s ease-in-out;
+}
 
-        header.shrink {
-            padding: 14px 18px 6px;
-            min-height: 160px; /* Tamaño reducido exacto */
-            backdrop-filter: blur(8px);
-            background: rgba(0,0,0,0.4);
-        }
+header.shrink {
+    padding: 14px 18px 6px;
+    min-height: 160px; 
+    padding-top: 20px; /* Se reduce el aire arriba al achicarse */
+    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.4);
+}
 
-        header .logo {
-            max-width: 250px; /* Tamaño original */
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            transition: max-width 0.4s ease-in-out;
-        }
+header .logo {
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    transition: max-width 0.4s ease-in-out;
+}
 
-        header.shrink .logo {
-            max-width: 125px; /* Reducción al 50% exacta */
-        }
+header.shrink .logo {
+    max-width: 125px;
+}
 
-        header .tagline {
-            margin: 6px 0 0;
-            color: var(--muted);
-            font-size: 0.95rem;
-            transition: font-size 0.4s ease-in-out;
-        }
+header .tagline {
+    margin: 6px 0 0; /* Margen exacto de la web principal */
+    color: var(--muted);
+    font-size: 0.95rem;
+    transition: font-size 0.4s ease-in-out;
+}
 
-        header.shrink .tagline {
-            font-size: 0.75rem;
-        }
+header.shrink .tagline {
+    font-size: 0.75rem;
+}
 
-        /* --- CONTENEDOR DE LINKS --- */
-        .wrapper {
-            width: 90%;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px 0 60px;
-        }
+/* --- AJUSTE DEL WRAPPER --- */
+.wrapper {
+    width: 90%;
+    max-width: 500px;
+    margin: -20px auto 0; /* Margen negativo para subir los links y pegar el wrapper al header */
+    padding: 0 0 60px;
+}
 
         .links-container {
             display: flex;
