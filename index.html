@@ -7,7 +7,6 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="favicon.png">
-
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
@@ -29,74 +28,51 @@
             min-height: 100vh;
         }
 
-        /* --- HEADER CALCADO DEL ORIGINAL --- */
-        /* --- HEADER RECALIBRADO PARA IDENTIDAD TOTAL --- */
-header {
-    padding: 40px 18px 20px; /* Espacio justo arriba y abajo */
-    text-align: center;
-    position: sticky;
-    top: 0;
-    backdrop-filter: blur(2px);
-    z-index: 10;
-    
-    /* ELIMINAMOS min-height: 240px */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-    transition: all 0.4s ease-in-out;
-}
+        /* --- HEADER ESTÁTICO (Sin scroll pegajoso ni movimientos) --- */
+        header {
+            /* Subimos el logo ajustando el padding superior al mínimo */
+            padding: 15px 18px 5px; 
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-header.shrink {
-    padding: 10px 18px; /* Se compacta al máximo al scrollear */
-    backdrop-filter: blur(8px);
-    background: rgba(0,0,0,0.6);
-}
+        header .logo {
+            max-width: 220px; /* Tamaño intermedio ideal */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            /* Empujamos el logo un poquito más arriba manualmente */
+            margin-top: -5px; 
+        }
 
-header .logo {
-    max-width: 200px; /* Un poco más chico para que no sea gigante en links */
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    transition: max-width 0.4s ease-in-out;
-}
+        header .tagline {
+            margin: 4px 0 0; /* Pegado al logo como en la original */
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
 
-header.shrink .logo {
-    max-width: 100px; /* Se achica a la mitad */
-}
-
-header .tagline {
-    margin: 10px 0 0; /* Espacio corto entre logo y texto */
-    color: var(--muted);
-    font-size: 0.9rem;
-    transition: all 0.4s ease-in-out;
-}
-
-header.shrink .tagline {
-    font-size: 0.7rem;
-    margin-top: 5px;
-}
-
-/* --- WRAPPER PEGADO AL HEADER --- */
-.wrapper {
-    width: 90%;
-    max-width: 500px;
-    margin: 0 auto; /* Eliminamos márgenes negativos, ya no hacen falta */
-    padding: 20px 0 60px;
-}
+        /* --- CONTENEDOR DE LINKS --- */
+        .wrapper {
+            width: 90%;
+            max-width: 500px;
+            margin: 0 auto;
+            /* Ajustamos el espacio entre el tagline y los botones */
+            padding: 10px 0 60px; 
+        }
 
         .links-container {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         .link-card {
-            font-family: 'Arial', sans-serif; /* Mantenemos Arial para legibilidad de botones */
+            font-family: 'Arial', sans-serif;
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 18px;
+            padding: 16px;
             border-radius: 12px;
             text-decoration: none;
             color: var(--text-main);
@@ -109,7 +85,7 @@ header.shrink .tagline {
         }
 
         .link-card i {
-            font-size: 22px;
+            font-size: 20px;
             position: absolute;
             left: 20px;
         }
@@ -123,26 +99,20 @@ header.shrink .tagline {
             background: rgba(255, 255, 255, 0.1);
             transform: scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(198, 40, 40, 0.25);
+            box-shadow: 0 0 15px rgba(198, 40, 40, 0.2);
         }
 
         .footer {
             text-align: center;
             margin-top: 40px;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--muted);
-        }
-
-        /* Ajuste para móviles */
-        @media (max-width: 600px) {
-            header { min-height: 280px; }
-            header.shrink { min-height: 200px; }
         }
     </style>
 </head>
 <body>
 
-    <header id="main-header">
+    <header>
         <img src="Relieve en negro.png" alt="Auritri" class="logo">
         <p class="tagline">Somos Auritri, somos una banda</p>
     </header>
@@ -161,10 +131,6 @@ header.shrink .tagline {
                 <i class="fab fa-tiktok"></i>
                 <span>TikTok</span>
             </a>
-            <a href="https://" class="link-card" target="_blank">
-                <i class="fab fa-facebook"></i>
-                <span>Facebook</span>
-            </a>
             <a href="https://www.youtube.com/@auritri" class="link-card" target="_blank">
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
@@ -173,7 +139,7 @@ header.shrink .tagline {
                 <i class="fab fa-soundcloud"></i>
                 <span>SoundCloud</span>
             </a>
-            <a href="https://open.spotify.com" class="link-card" target="_blank">
+            <a href="#" class="link-card" target="_blank">
                 <i class="fab fa-spotify"></i>
                 <span>Spotify</span>
             </a>
@@ -184,24 +150,5 @@ header.shrink .tagline {
         </div>
     </main>
 
-    <script>
-        const header = document.getElementById('main-header');
-        let isShrunk = false;
-
-        window.addEventListener('scroll', () => {
-            // Se achica apenas bajas 1px, igual que en tu otra página
-            if (window.scrollY > 10) {
-                if (!isShrunk) {
-                    header.classList.add('shrink');
-                    isShrunk = true;
-                }
-            } else {
-                if (isShrunk) {
-                    header.classList.remove('shrink');
-                    isShrunk = false;
-                }
-            }
-        });
-    </script>
-</body>
+    </body>
 </html>
