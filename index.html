@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Auritri</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Fuente épica (Google Fonts) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0b0c;
+      --panel:#0f1416;
+      --accent:#c62828;
+      --muted:#9aa3a6;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    body {
+  margin: 0;
+  font-family: "Cinzel", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(circle at 10% 10%, #000 0%, #000 40%), /* negro puro */
+              linear-gradient(180deg, rgba(0,0,0,0.85), rgba(0,0,0,1) 30%); /* casi negro a negro puro */
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  }
+
+  header {
+    padding: 28px 18px 12px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(2px);
+    z-index: 10;
+    min-height: 240px; /* en vez de height fija */
+    transition: 
+      padding 0.4s ease-in-out, 
+      min-height 0.4s ease-in-out, 
+      backdrop-filter 0.4s ease-in-out, 
+      background 0.4s ease-in-out;
+    }
+
+    h1.site-title{
+      margin:0;
+      font-size:3rem;
+      letter-spacing:2px;
+      color:var(--accent);
+      text-shadow:0 4px 20px rgba(0,0,0,0.7);
+    }
+    
+    p.tagline{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    nav.controls{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+    
+    .controls button{
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.05);
+      color:#fff;
+      padding:10px 16px;
+      font-weight:600;
+      border-radius:10px;
+      cursor:pointer;
+      transition: all .18s ease;
+    }
+    
+    .controls button:hover{transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+    .controls button.active{background:linear-gradient(90deg, rgba(198,40,40,0.15), rgba(198,40,40,0.06)); border-color:var(--accent)}
+
+    main.container{
+      max-width:1100px;
+      margin:10px auto;
+      padding:22px;
+      padding-top: 20px; /* espacio para el header */
+    }
+
+    header .logo {
+      max-width: 250px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      transition: max-width 0.4s ease-in-out;
+    }
+
+    header .tagline {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 6px 0 0;
+      transition: font-size 0.4s ease-in-out;
+    }
+
+    header.shrink {
+      padding: 14px 18px 6px;
+      min-height: 160px; /* se achica pero sigue visible */
+      backdrop-filter: blur(8px);
+    }
+
+    header.shrink .logo {
+      max-width: 125px; /* logo se reduce al 50% */
+    }
+
+    header.shrink .tagline {
+      font-size: 0.75rem; /* tagline más pequeño */
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:20px;
+      border-radius:12px;
+      margin-bottom:20px;
+      display:none;
+    }
+   
+    .panel h2 {
+        margin-top: 1px;     /* reduce espacio arriba */
+        margin-bottom: 8px;  /* reduce espacio abajo */
+    }
+    
+    
+    .panel.show{display:block}
+
+    .members-list{ 
+      display:grid; 
+      grid-template-columns: 
+        repeat(2, 1fr); gap:12px; 
+      margin-top:12px; justify-content:center; 
+    }
+    
+    .member{
+      background:rgba(255,255,255,0.02);
+      padding:60px;
+      border-radius:8px;
+      text-align:center;
+      background-size:cover;
+      background-position:center;
+    }
+    
+    .member h4{margin:6px 0 2px; background:rgba(0,0,0,0.6); display:inline-block; padding:2px 6px; border-radius:4px;}
+    .member p{margin:0; color:var(--muted); font-size:0.92rem; background:rgba(0,0,0,0.6); display:inline-block; padding:2px 6px; border-radius:4px;}
+
+    .contribuciones-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* antes 1fr grande, ahora más chico */
+      gap: 12px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+    
+    .contribuciones {
+      background: rgba(255,255,255,0.02);
+      padding: 8px;                /* antes 12px */
+      border-radius: 6px;          /* más pequeño */
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .contribuciones h4{margin:6px 0 2px; background:rgba(0,0,0,0.6); display:inline-block; padding:2px 6px; border-radius:4px;}
+    .contribuciones p{margin:0; color:var(--muted); font-size:0.92rem; background:rgba(0,0,0,0.6); display:inline-block; padding:2px 6px; border-radius:4px;} 
+
+    .history-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; /* un poco más grande que el tamaño base */
+      line-height: 1.4;   /* menos interlineado */
+      color: #dfe6e8;
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    
+    .photo{
+      background:#111;
+      border-radius:8px;
+      overflow:hidden;
+      min-height:100px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    .logo {
+      max-width: 250px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      
+    }
+
+    .photo img{width:100%; height:100%; object-fit:cover; display:block}
+
+    .merch-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+    }
+    
+    .merch-grid .item{
+      background:rgba(255,255,255,0.02);
+      border-radius:8px;
+      padding:12px;
+      text-align:center;
+    }
+    
+    .merch-grid .item img{
+      max-width:50%;
+      border-radius:6px;
+    }
+    
+    .buy-button{
+      display:inline-block;
+      margin-top:8px;
+      background:var(--accent);
+      color:white;
+      padding:8px 14px;
+      border-radius:6px;
+      text-decoration:none;
+      font-weight:bold;
+      transition:transform 0.2s;
+    }
+    
+    .buy-button:hover{
+      transform:scale(1.05);
+    }
+
+    footer{ 
+      text-align:center; 
+      color:var(white); 
+      margin-top:12px; 
+      font-size:0.9rem 
+    }
+    
+    .social-links{
+      margin:12px 0;
+    }
+    
+    .social-links a img{
+      width:28px;
+      height:28px;
+      margin:0 6px;
+      transition:transform 0.2s;
+    }
+    
+    .social-links a img:hover{
+      transform:scale(1.2);
+    }
+
+    @media (max-width: 600px) {
+    header {
+      min-height: 280px; /* más alto en móviles verticales para la doble fila */
+      }
+    header.shrink {
+      min-height: 200px; /* achicado pero cómodo en vertical */
+      }
+    }
+    
+    @media (max-width: 600px){
+      .members-list{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width:600px){
+      h1.site-title{font-size:2rem}
+      .controls button{padding:8px 12px}
+    }
+
+    @keyframes flash {
+      0%{box-shadow:0 0 0 rgba(198,40,40,0)}
+      50%{box-shadow:0 0 18px rgba(198,40,40,0.28)}
+      100%{box-shadow:0 0 0 rgba(198,40,40,0)}
+    }
+    .pulse{animation:flash 1s ease}
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="Relieve en negro.png" alt="Auritri" class="logo">
+    <p class="tagline">Somos Auritri, somos una banda</p>
+
+    <nav class="controls" aria-label="Navegación principal">
+      <button data-target="history" class="active">Historia</button>
+      <button data-target="members">Integrantes</button>
+      <button data-target="musica">Música</button>
+      <button data-target="photos">Fotos</button>
+      <button data-target="merch">Merch</button>
+      <button data-target="contact">Contacto</button>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section id="history" class="panel show" tabindex="0">
+      <h2>Historia</h2>
+      <p class="history-text">Auritri es una banda de metal uruguaya que nació a fines de 2019 con una sola misión: crear música que conecte de verdad con quien la escucha.
+        <br>
+        Desde su formación, la banda se destacó por combinar riffs potentes, melodías atrapantes y arreglos que sorprenden en cada tema. 
+        Cada canción está pensada para generar energía, emoción y momentos que se quedan en la memoria. Con un sonido trabajado y lleno de detalles, 
+        Auritri busca que la música no solo se escuche, sino que se sienta: potente, intensa y a la vez apasionada. Su propuesta es para quienes disfrutan 
+        de la fuerza del metal, pero también valoran la creatividad y la emoción detrás de cada acorde.</p>
+    </section>
+
+    <section id="members" class="panel" tabindex="0">
+      <h2>Integrantes</h2>
+      <p class="history-text"></p>
+      <br>
+      <div class="members-list" id="membersList">
+
+        <div class="member" style="background-image:url('fondo-lu.jpg')">
+          <h4>Lu</h4> <br>
+          <p>Vocalista</p>
+        </div>
+        
+        <div class="member" style="background-image:url('fondo-marcooos.jpg')">
+          <h4>Marcos</h4> <br>
+          <p>Guitarrista</p>
+        </div>
+        
+        <div class="member" style="background-image:url('fondo-agustin.jpg')">
+          <h4>Agustín</h4> <br>
+          <p>Baterista</p>
+        </div>
+        <div class="member" style="background-image:url('fondo-mauro.jpg')">
+          <h4>Mauro</h4> <br>
+          <p>Bajista</p>
+        </div>
+      </div>
+      
+     <div class="contribuciones-list" id="membersList">
+      <div class="contribuciones" style="background-image:url('elisa.jpg')">
+          <h4>Elisa</h4> <br>
+          <p>Composición</p>
+        </div>
+
+      <div class="contribuciones" style="background-image:url('lucia.jpg')">
+          <h4>Lucia</h4> <br>
+          <p>Tecladista en vivo</p>
+        </div> 
+      </div>     
+    </section>
+
+    <section id="musica" class="panel" tabindex="0">
+      <h2>Música</h2>
+      <!-- Reproductor SoundCloud embebido -->
+      <div style="max-width: 100%; margin: 0 auto; text-align: center;">
+        <iframe 
+          width="100%" 
+          height="300" 
+          scrolling="no" 
+          frameborder="no" 
+          allow="autoplay" 
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/auritrioficial&color=%23c62828&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&visual=true">
+        </iframe>
+      </div>
+    </section>
+
+    <section id="photos" class="panel" tabindex="0">
+      <h2>Fotos</h2>
+      <p class="history-text"></p>
+      <div class="gallery" id="gallery">
+        <!-- Las imágenes se cargarán automáticamente desde GitHub -->
+      </div>
+    </section>
+
+    <section id="merch" class="panel" tabindex="0">
+      <h2>Merch</h2>
+      <br>
+      <div class="merch-grid">
+        <div class="item">
+          <img src="pua.png" alt="Púa">
+          <h4>Púa</h4>
+          <p>$10</p>
+          <a class="buy-button" href="https://wa.me/59896160371?text=Hola!%20Quiero%20comprar%20la%20púa" target="_blank">Comprar</a>
+        </div>
+        <div class="item">
+          <img src="gorro.png" alt="Gorro">
+          <h4>Gorro</h4>
+          <p>$200</p>
+          <a class="buy-button" href="https://wa.me/59896160371?text=Hola!%20Quiero%20comprar%20el%20gorro" target="_blank">Comprar</a>
+        </div>
+        <div class="item">
+          <img src="remera.png" alt="Remera">
+          <h4>Remera</h4>
+          <p>$690</p>
+          <a class="buy-button" href="https://wa.me/59896160371?text=Hola!%20Quiero%20comprar%20la%20remera" target="_blank">Comprar</a>
+        </div>
+        <div class="item">
+          <img src="canguro.png" alt="Canguro">
+          <h4>Canguro</h4>
+          <p>$1190</p>
+          <a class="buy-button" href="https://wa.me/59896160371?text=Hola!%20Quiero%20comprar%20el%20canguro" target="_blank">Comprar</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="panel" tabindex="0">
+      <h2>Contacto</h2>
+      <br>
+      <form action="mailto:bandaauritri@gmail.com" method="post" enctype="text/plain">
+        <label>Nombre:<br><input type="text" name="nombre"></label><br>
+        <label>Email:<br><input type="email" name="email"></label><br>
+        <label>Mensaje:<br><textarea name="mensaje"></textarea></label><br>
+        <button type="submit">Enviar</button>
+      </form>
+
+      <div style="margin-top: 15px;">
+        <a href="https://wa.me/59896160371?text=Hola!%20Quería%20comunicarme%20con%20ustedes" 
+           target="_blank" 
+           style="display:inline-flex; align-items:center; text-decoration:none; color:white; background:var(--accent); padding:8px 12px; border-radius:6px;">
+          <img src="icon-whatsapp.png" alt="WhatsApp" style="width:20px; height:20px; margin-right:8px;">
+          Contactar por WhatsApp
+        </a>
+      </div>
+     
+    </section>   
+  </main>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://youtube.com/@auritri" target="_blank"><img src="icon-youtube.png" alt="YouTube"></a>
+      <a href="https://soundcloud.com/auritrioficial" target="_blank"><img src="icon-soundcloud.png" alt="SoundCloud"></a>
+      <a href="https://instagram.com/auritrioficial" target="_blank"><img src="icono-instagram.png" alt="Instagram"></a>
+      <a href="https://www.tiktok.com/@auritrioficial" target="_blank"><img src="icon-tiktok.png" alt="TikTok"></a>
+      <a href="https://www.facebook.com/auritriofficial" target="_blank"><img src="icon-facebook.png" alt="Facebook"></a>
+    </div>
+    Creada con ❤ por Auritri
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.controls button');
+    const panels = document.querySelectorAll('.panel');
+
+    function showPanel(id){
+      panels.forEach(p => { p.classList.toggle('show', p.id === id); });
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+      const active = document.getElementById(id);
+      if(active){
+        active.classList.add('pulse');
+        setTimeout(()=> active.classList.remove('pulse'), 1000);
+        active.focus({preventScroll:true});
+      }
+    }
+
+    buttons.forEach(btn => btn.addEventListener('click', ()=> showPanel(btn.dataset.target)));
+
+    document.querySelector('.controls').addEventListener('keydown', (e)=>{
+      const idx = Array.from(buttons).findIndex(b => b.classList.contains('active'));
+      if(e.key === 'ArrowRight') buttons[(idx+1) % buttons.length].click();
+      if(e.key === 'ArrowLeft') buttons[(idx-1 + buttons.length) % buttons.length].click();
+    });
+
+    // ---- GALERÍA AUTOMÁTICA DESDE GITHUB ----
+    const gallery = document.getElementById('gallery');
+    const user = 'MauroSuti'; // tu usuario de GitHub
+    const repo = 'pruebas';           // tu repo donde está la carpeta photos
+    const folder = '21-9';          // nombre de la carpeta con imágenes
+    const url = `https://api.github.com/repos/${user}/${repo}/contents/${folder}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(files => {
+        files.forEach(file => {
+          if(file.type === 'file' && /\.(jpe?g|png|gif|webp)$/i.test(file.name)){
+            const div = document.createElement('div');
+            div.className = 'photo';
+            const img = document.createElement('img');
+            img.src = file.download_url;
+            img.alt = ''; // no mostramos el nombre
+            div.appendChild(img);
+            gallery.appendChild(div);
+          }
+        });
+      })
+      .catch(err => console.error('Error cargando imágenes:', err));
+
+    // Código drag & drop
+    ['dragenter','dragover','dragleave','drop'].forEach(ev => {
+      gallery.addEventListener(ev, e => e.preventDefault());
+    });
+    gallery.addEventListener('drop', async (e)=>{
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      for(const f of files){
+        const url = URL.createObjectURL(f);
+        const div = document.createElement('div'); div.className='photo';
+        const img = document.createElement('img'); img.src = url; img.alt = '';
+        div.appendChild(img);
+        gallery.prepend(div);
+      }
+    });
+
+const header = document.querySelector('header');
+let isShrunk = false;
+
+window.addEventListener('scroll', () => {
+  requestAnimationFrame(() => {
+    if (window.scrollY === 0) {
+      // Solo si estás arriba de todo, vuelve al tamaño original
+      header.classList.remove('shrink');
+      isShrunk = false;
+    } else if (!isShrunk) {
+      // Apenas se scrollea un poquito, se achica y queda fijo
+      header.classList.add('shrink');
+      isShrunk = true;
+    }
+  });
+});
+    
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
